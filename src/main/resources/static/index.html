@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NYC Taxi load analyser by OAA</title>
+</head>
+<body>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <input type="radio" id="actionPickup" name="action" value="PICKUP" checked> Pickup<br>
+            <input type="radio" id="actionDropoff" name="action" value="DROPOFF"> Drop off<br>
+        </td>
+        <td>
+            Time point in format yyyy-MM-dd HH:mm:ss (from '2013-01-01 00:00:00' till '2013-12-31 23:59:59'):<br>
+            <input type="text" id="timePoint" value="2013-01-04 12:00:00 ">
+        </td>
+        <td>
+            Time window in sec (60, 300, 900, 1800, 3600 ...):<br>
+            <input type="number" id="windowSec" min="1" value="345600">
+        </td>
+        <td>
+            <button onclick="loadData(this)" style=" width: 20em;  height: 5em">Update</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <canvas id="myCanvas"  style="border:1px solid black;" width="1600" height="860"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var width = 1600;
+    var height = 860;
+
+    drawCanvas();
+
+    function drawCanvas() {
+        var base_image = new Image();
+        base_image.src = './img/NYC.png';
+        base_image.onload = function(){
+            ctx.save();
+            ctx.drawImage(base_image, 0, 0, width, height);
+            ctx.restore();
+        }
+    }
+
+    function loadData(btn) {
+        btn.disabled = true;
+        drawCanvas();
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data=this.responseText;
+                var jsonResponse = JSON.parse(data);
+                updateGUI(btn, jsonResponse);
+            }
+        };
+
+        var action = document.getElementById("actionDropoff").checked ? "DROPOFF" : "PICKUP";
+
+        var textTimePoint = document.getElementById("timePoint").value;
+        var parts = textTimePoint.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+        var date =Date.UTC(+parts[1], parts[2]-1, +parts[3], +parts[4], +parts[5], +parts[6]) / 1000;
+
+        var textWindowSec = document.getElementById("windowSec").value;
+
+        xhttp.open("GET", "/getLoadFactors?action=" + action + "&timeInSec=" + date + "&windowInSec=" + textWindowSec, true);
+        xhttp.send();
+    }
+
+    function updateGUI(btn, data) {
+        btn.disabled = false;
+
+        var gridWidth = data.key.key;
+        var gridHeight = data.key.value;
+
+        var loadArray = [];
+
+        for (var i = 0; i < gridWidth; i++){
+            loadArray[i] = [];
+            for (var j = 0; j < gridHeight; j++){
+                loadArray[i][j] = 0;
+            }
+        }
+
+        var maxLoad = 0;
+        for(var i = 0; i < data.value.length; i++) {
+            loadArray[data.value[i].xindex][data.value[i].yindex] = data.value[i].value;
+            if (data.value[i].value > maxLoad) {
+                maxLoad = data.value[i].value;
+            }
+        }
+
+        var cellWidth = width / gridWidth;
+        var cellHeight = height / gridHeight;
+        var alphaStep = maxLoad == 0 ? 0 : 1 / maxLoad;
+
+        ctx.beginPath();
+        for(var i = 0; i < gridWidth; i++) {
+            for(var j = 0; j < gridHeight; j++) {
+                ctx.fillStyle = "rgba(255,0,0," + (alphaStep * loadArray[i][j]) + ")";
+                ctx.fillRect(cellWidth * i, height - cellHeight * (j +1), cellWidth, cellHeight);
+            }
+        }
+        ctx.stroke();
+    }
+</script>
+</body>
+</html>
