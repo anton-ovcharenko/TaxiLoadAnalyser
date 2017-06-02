@@ -26,10 +26,9 @@ public enum Fields {
     X("x"),
     Y("y"),
     IN_X_INDEX("in_x_index"),
-    IN_Y_INDEX ("in_y_index"),
+    IN_Y_INDEX("in_y_index"),
     OUT_X_INDEX("out_x_index"),
-    OUT_Y_INDEX("out_y_index"),
-    ;
+    OUT_Y_INDEX("out_y_index"),;
 
     private String name;
 

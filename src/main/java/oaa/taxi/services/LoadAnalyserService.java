@@ -14,6 +14,7 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static oaa.taxi.domain.Fields.HACK_LICENSE;
@@ -38,6 +39,9 @@ import static oaa.taxi.domain.Fields.VENDOR_ID;
 @Log4j2
 public class LoadAnalyserService {
 
+    @Value("${load.data.path}")
+    private String dataPath;
+
     @Autowired
     private SparkSession sparkSession;
     @Autowired
@@ -53,10 +57,7 @@ public class LoadAnalyserService {
             .format("CSV")
             .option("header", "true")
             .schema(generateSchema())
-            //.load("d:/programming/PROJECT/IDEA_WS/Taxi/data/trip_data/trip_data_1.csv")
-            //.load("d:/programming/PROJECT/IDEA_WS/Taxi/data/trip_data/*.csv")
-            .load("./data/small.csv")
-            ;
+            .load(dataPath);
 
         sparkSession.udf().register(ComputeXIndexFilter.NAME, computeXIndexFilter, DataTypes.IntegerType);
         sparkSession.udf().register(ComputeYIndexFilter.NAME, computeYIndexFilter, DataTypes.IntegerType);

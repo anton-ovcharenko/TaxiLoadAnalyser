@@ -88,6 +88,7 @@ public class SparkComputationService implements Serializable {
     }
 
     public List<LoadFactor> getLoadFactorList(Dataset<Row> rowDataset, Action action, long timeInSec, long windowInSec) {
+        long t1 = System.currentTimeMillis();
         Dataset<Row> rowDatasetWithoutErrors = rowDataset
             .drop(Fields.Constants.uselessFields)
             .filter(col(IN_X.getName()).geq(parametersBrc.getValue().getLeft()).and(col(IN_X.getName()).leq(parametersBrc.getValue().getRight())))
@@ -101,18 +102,35 @@ public class SparkComputationService implements Serializable {
             .withColumn(OUT_X_INDEX.getName(), callUDF(ComputeXIndexFilter.NAME, col(OUT_X.getName())))
             .withColumn(OUT_Y_INDEX.getName(), callUDF(ComputeYIndexFilter.NAME, col(OUT_Y.getName())))
             .drop(Fields.Constants.uselessFields2)
-            .persist(StorageLevel.MEMORY_ONLY());
+            .persist(StorageLevel.MEMORY_AND_DISK());
 
+        long t2 = System.currentTimeMillis();
         final long halfWindow = windowInSec / 2;
         final String secondColName = resolveSecondsColumn(action);
         Dataset<LoadFactor> loadFactorDataset = rowDatasetWithoutErrors
             .filter(col(secondColName).geq(timeInSec - halfWindow).and(col(secondColName).leq(timeInSec + halfWindow)))
-            .map((MapFunction<Row, LoadFactor>) (r) -> mapToLoadFactor2(r, action), Encoders.bean(LoadFactor.class))
+
+            //.map((MapFunction<Row, LoadFactor>) (r) -> mapToLoadFactor2(r, action), Encoders.bean(LoadFactor.class))
+
+            .withColumn(LoadFactor.X_INDEX_NAME, col(resolveXIndexColumn(action)))
+            .withColumn(LoadFactor.Y_INDEX_NAME, col(resolveYIndexColumn(action)))
+            .withColumn(LoadFactor.VALUE_NAME, col(PASSENGER_COUNT.getName()))
+
             .groupBy(col(LoadFactor.X_INDEX_NAME), col(LoadFactor.Y_INDEX_NAME))
             .agg(sum(col(LoadFactor.VALUE_NAME)).cast(DataTypes.IntegerType).alias(LoadFactor.VALUE_NAME))
             .orderBy(col(LoadFactor.VALUE_NAME).desc())
             .as(Encoders.bean(LoadFactor.class));
-        return loadFactorDataset.collectAsList();
+
+        long t3 = System.currentTimeMillis();
+        List<LoadFactor> result = loadFactorDataset
+            .collectAsList();
+
+        long t4 = System.currentTimeMillis();
+        log.debug("time1: {}", t2 - t1);
+        log.debug("time2: {}", t3 - t2);
+        log.debug("time3: {}", t4 - t3);
+
+        return result;
     }
 
     private LoadFactor mapToLoadFactor(Row row) {

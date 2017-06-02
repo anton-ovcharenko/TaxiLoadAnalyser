@@ -15,7 +15,6 @@ DFD2202EE08F7A8DC9A57B02ACB81FE2,   51EE87E3205C985EF8431D850C786310,   CMT,    
 20D9ECB2CA0767CF7A01564DF2844A3E,   598CCE5B9C1918568DEE71F43CF26CD2,   CMT,        1,          N,                  2013-01-07 15:27:48,    2013-01-07 15:38:37,    1,                  648,                1.70,           -73.966743,40.764252,-73.983322,40.743763
 496644932DF3932605C22C7926FF0FE0,   513189AD756FF14FE670D10B92FAF04C,   CMT,        1,          N,                  2013-01-08 11:01:15,    2013-01-08 11:08:14,    1,                  418,                .80,            -73.995804,40.743977,-74.007416,40.744343
 
-https://maps.googleapis.com/maps/api/directions/json?origin=40.757977,-73.978165&destination=40.751171,-73.989838&key=AIzaSyDvbWyjrOfoE_oowuxyS2ZAzqtDdT0GIYo
 https://www.youtube.com/watch?v=XLSQJQjmFFw
 https://habrahabr.ru/company/jugru/blog/325070/
 https://github.com/SpringOne2GX-2014/SparkForSpring
