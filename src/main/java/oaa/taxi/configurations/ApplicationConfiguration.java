@@ -18,15 +18,15 @@ public class ApplicationConfiguration {
     public SparkConf sparkConfLocalhost() {
         SparkConf conf = new SparkConf();
         conf.setAppName("NY taxi load analyser (localhost)");
-        conf.setMaster("local[*]");
-        conf.set("spark.executor.memory", "8g");
+        conf.setMaster("local[2]");
+        conf.set("spark.executor.memory", "1g");
         conf.set("spark.local.dir", "d:/temp/");
         return conf;
     }
 
     @Bean
     @Profile("default")
-    public SparkConf sparkConf() {
+    public SparkConf sparkConfProd() {
         SparkConf conf = new SparkConf();
         conf.setAppName("NY taxi load analyser (PROD)");
         conf.setMaster("local[*]");

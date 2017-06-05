@@ -24,7 +24,7 @@ import static org.apache.spark.sql.functions.*;
 /**
  * @author aovcharenko date 01-06-2017.
  */
-@Component("sparkComputationServiceImpl")
+@Component("sparkComputationService")
 @Log4j2
 public class SparkComputationServiceImpl implements SparkComputationService, Serializable {
 

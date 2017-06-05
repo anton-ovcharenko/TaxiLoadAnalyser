@@ -36,9 +36,8 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
 
-    var width = 1600;
-    var height = 860;
-
+    var mapWidth = 1600;
+    var mapHeight = 860;
     drawCanvas();
 
     function drawCanvas() {
@@ -46,7 +45,7 @@
         base_image.src = './img/NYC.png';
         base_image.onload = function(){
             ctx.save();
-            ctx.drawImage(base_image, 0, 0, width, height);
+            ctx.drawImage(base_image, 0, 0, mapWidth, mapHeight);
             ctx.restore();
         }
     }
@@ -60,7 +59,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 var data=this.responseText;
                 var jsonResponse = JSON.parse(data);
-                updateGUI(btn, jsonResponse);
+                updateGUI(btn, jsonResponse.gridWidth, jsonResponse.gridHeight, jsonResponse.loadFactorList );
             }
         };
 
@@ -76,11 +75,8 @@
         xhttp.send();
     }
 
-    function updateGUI(btn, data) {
+    function updateGUI(btn, gridWidth, gridHeight, loadFactorList) {
         btn.disabled = false;
-
-        var gridWidth = data.key.key;
-        var gridHeight = data.key.value;
 
         var loadArray = [];
 
@@ -92,22 +88,22 @@
         }
 
         var maxLoad = 0;
-        for(var i = 0; i < data.value.length; i++) {
-            loadArray[data.value[i].xindex][data.value[i].yindex] = data.value[i].value;
-            if (data.value[i].value > maxLoad) {
-                maxLoad = data.value[i].value;
+        for(var i = 0; i < loadFactorList.length; i++) {
+            loadArray[loadFactorList[i].xindex][loadFactorList[i].yindex] = loadFactorList[i].value;
+            if (loadFactorList[i].value > maxLoad) {
+                maxLoad = loadFactorList[i].value;
             }
         }
 
-        var cellWidth = width / gridWidth;
-        var cellHeight = height / gridHeight;
+        var cellWidth = mapWidth / gridWidth;
+        var cellHeight = mapHeight / gridHeight;
         var alphaStep = maxLoad == 0 ? 0 : 1 / maxLoad;
 
         ctx.beginPath();
         for(var i = 0; i < gridWidth; i++) {
             for(var j = 0; j < gridHeight; j++) {
                 ctx.fillStyle = "rgba(255,0,0," + (alphaStep * loadArray[i][j]) + ")";
-                ctx.fillRect(cellWidth * i, height - cellHeight * (j +1), cellWidth, cellHeight);
+                ctx.fillRect(cellWidth * i, mapHeight - cellHeight * (j +1), cellWidth, cellHeight);
             }
         }
         ctx.stroke();

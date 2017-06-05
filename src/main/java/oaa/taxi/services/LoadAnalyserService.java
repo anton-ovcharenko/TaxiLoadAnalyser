@@ -37,17 +37,19 @@ public class LoadAnalyserService {
     @Autowired
     private ComputeYIndexFilter computeYIndexFilter;
     @Autowired
-//    @Qualifier("sparkComputationService")
-    @Qualifier("sparkComputationService2")
-    private SparkComputationServiceImpl sparkComputationService;
+//    @Qualifier("sparkComputationService") //map-reduce implementation
+    @Qualifier("sparkComputationService2") //UDF implementation
+    private SparkComputationService sparkComputationService;
 
     public List<LoadFactor> getLoadFactors(Action action, long timeInSec, long windowInSec) {
         Dataset<Row> rowDataset = sparkSession
                 .read()
-                .format("CSV")
                 .option("header", "true")
+                .option("mode", "DROPMALFORMED")
                 .schema(generateSchema())
-                .load(dataPath);
+                .csv(dataPath)
+                //.coalesce(2)
+                ;
 
         sparkSession.udf().register(ComputeXIndexFilter.NAME, computeXIndexFilter, DataTypes.IntegerType);
         sparkSession.udf().register(ComputeYIndexFilter.NAME, computeYIndexFilter, DataTypes.IntegerType);
@@ -69,8 +71,8 @@ public class LoadAnalyserService {
                 DataTypes.createStructField(IN_TS.getName(), DataTypes.TimestampType, false),
                 DataTypes.createStructField(OUT_TS.getName(), DataTypes.TimestampType, false),
                 DataTypes.createStructField(PASSENGER_COUNT.getName(), DataTypes.IntegerType, false),
-                DataTypes.createStructField(TRIP_TIME_IN_SECS.getName(), DataTypes.IntegerType, false),
-                DataTypes.createStructField(TRIP_DISTANCE.getName(), DataTypes.DoubleType, false),
+                DataTypes.createStructField(TRIP_TIME_IN_SECS.getName(), DataTypes.StringType, false),
+                DataTypes.createStructField(TRIP_DISTANCE.getName(), DataTypes.StringType, false),
                 DataTypes.createStructField(IN_X.getName(), DataTypes.DoubleType, false),
                 DataTypes.createStructField(IN_Y.getName(), DataTypes.DoubleType, false),
                 DataTypes.createStructField(OUT_X.getName(), DataTypes.DoubleType, false),

@@ -41,10 +41,12 @@ public class SparkComputationService2Impl implements SparkComputationService, Se
         long t1 = System.currentTimeMillis();
         Dataset<Row> rowDatasetWithoutErrors = rowDataset
                 .drop(Fields.Constants.uselessFields)
+                //filter wrong (out of map points)
                 .filter(col(IN_X.getName()).geq(parametersBrc.getValue().getLeft()).and(col(IN_X.getName()).leq(parametersBrc.getValue().getRight())))
                 .filter(col(OUT_X.getName()).geq(parametersBrc.getValue().getLeft()).and(col(OUT_X.getName()).leq(parametersBrc.getValue().getRight())))
                 .filter(col(IN_Y.getName()).geq(parametersBrc.getValue().getBottom()).and(col(IN_Y.getName()).leq(parametersBrc.getValue().getTop())))
                 .filter(col(OUT_Y.getName()).geq(parametersBrc.getValue().getBottom()).and(col(OUT_Y.getName()).leq(parametersBrc.getValue().getTop())))
+                //add auxiliary columns
                 .withColumn(IN_SECONDS.getName(), unix_timestamp(col(IN_TS.getName())))
                 .withColumn(OUT_SECONDS.getName(), unix_timestamp(col(OUT_TS.getName())))
                 .withColumn(IN_X_INDEX.getName(), callUDF(ComputeXIndexFilter.NAME, col(IN_X.getName())))
@@ -52,12 +54,14 @@ public class SparkComputationService2Impl implements SparkComputationService, Se
                 .withColumn(OUT_X_INDEX.getName(), callUDF(ComputeXIndexFilter.NAME, col(OUT_X.getName())))
                 .withColumn(OUT_Y_INDEX.getName(), callUDF(ComputeYIndexFilter.NAME, col(OUT_Y.getName())))
                 .drop(Fields.Constants.uselessFields2)
-                .persist(StorageLevel.MEMORY_AND_DISK());
+                //.persist(StorageLevel.MEMORY_AND_DISK())
+                ;
 
         long t2 = System.currentTimeMillis();
-        final long halfWindow = windowInSec / 2;
-        final String secondColName = resolveSecondsColumn(action);
+        long halfWindow = windowInSec / 2;
+        String secondColName = resolveSecondsColumn(action);
         Dataset<LoadFactor> loadFactorDataset = rowDatasetWithoutErrors
+                //filter by time
                 .filter(col(secondColName).geq(timeInSec - halfWindow).and(col(secondColName).leq(timeInSec + halfWindow)))
 
                 //.map((MapFunction<Row, LoadFactor>) (r) -> mapToLoadFactor2(r, action), Encoders.bean(LoadFactor.class))
