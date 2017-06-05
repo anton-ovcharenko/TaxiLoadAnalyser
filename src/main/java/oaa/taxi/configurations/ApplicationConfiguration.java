@@ -12,25 +12,24 @@ import org.springframework.context.annotation.*;
 @PropertySource("classpath:property.properties")
 public class ApplicationConfiguration {
 
-
     @Bean
     @Profile("localhost")
     public SparkConf sparkConfLocalhost() {
-        SparkConf conf = new SparkConf();
-        conf.setAppName("NY taxi load analyser (localhost)");
-        conf.setMaster("local[2]");
-        conf.set("spark.executor.memory", "1g");
-        conf.set("spark.local.dir", "d:/temp/");
-        return conf;
+        return new SparkConf()
+                .setAppName("NY taxi load analyser (localhost)")
+                .setMaster("local[2]")
+                .set("spark.executor.memory", "1g")
+                .set("spark.local.dir", "d:/temp/")
+                ;
     }
 
     @Bean
     @Profile("default")
     public SparkConf sparkConfProd() {
-        SparkConf conf = new SparkConf();
-        conf.setAppName("NY taxi load analyser (PROD)");
-        conf.setMaster("local[*]");
-        return conf;
+        return new SparkConf()
+                .setAppName("NY taxi load analyser (PROD)")
+                .setMaster("local[*]")
+                ;
     }
 
     @Bean
