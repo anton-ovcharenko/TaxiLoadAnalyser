@@ -5,11 +5,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.SparkSession;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 @Configuration
 @ComponentScan("oaa.taxi")
@@ -45,9 +41,9 @@ public class ApplicationConfiguration {
     @Bean
     public SparkSession sparkSession(JavaSparkContext javaSparkContext, SparkConf sparkConf) {
         return SparkSession.builder()
-                           .sparkContext(javaSparkContext.sc())
-                           .config(sparkConf)
-                           .getOrCreate();
+                .sparkContext(javaSparkContext.sc())
+                .config(sparkConf)
+                .getOrCreate();
     }
 
     @Bean

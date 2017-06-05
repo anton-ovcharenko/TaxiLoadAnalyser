@@ -41,22 +41,22 @@ public enum Fields {
     }
 
     public static class Constants {
-        public static final String[] uselessFields = new String[] {
-            MEDALLION.getName(),
-            HACK_LICENSE.getName(),
-            VENDOR_ID.getName(),
-            RATE_CODE.getName(),
-            STORE_AND_FWD_FLAG.getName(),
-            TRIP_TIME_IN_SECS.getName(),
-            TRIP_DISTANCE.getName(),
+        public static final String[] uselessFields = new String[]{
+                MEDALLION.getName(),
+                HACK_LICENSE.getName(),
+                VENDOR_ID.getName(),
+                RATE_CODE.getName(),
+                STORE_AND_FWD_FLAG.getName(),
+                TRIP_TIME_IN_SECS.getName(),
+                TRIP_DISTANCE.getName(),
         };
-        public static final String[] uselessFields2 = new String[] {
-            IN_X.getName(),
-            IN_Y.getName(),
-            OUT_X.getName(),
-            OUT_Y.getName(),
-            IN_TS.getName(),
-            OUT_TS.getName(),
+        public static final String[] uselessFields2 = new String[]{
+                IN_X.getName(),
+                IN_Y.getName(),
+                OUT_X.getName(),
+                OUT_Y.getName(),
+                IN_TS.getName(),
+                OUT_TS.getName(),
         };
     }
 }
