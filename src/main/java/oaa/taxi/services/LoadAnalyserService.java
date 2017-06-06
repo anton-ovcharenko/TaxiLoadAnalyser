@@ -38,7 +38,8 @@ public class LoadAnalyserService {
     private ComputeYIndexFilter computeYIndexFilter;
     @Autowired
 //    @Qualifier("sparkComputationService") //map-reduce implementation
-    @Qualifier("sparkComputationService2") //UDF implementation
+//    @Qualifier("sparkComputationService2") //UDF implementation
+    @Qualifier("sparkComputationService3") //optimized variant (with UDF or without)
     private SparkComputationService sparkComputationService;
 
     public List<LoadFactor> getLoadFactors(Action action, long timeInSec, long windowInSec) {
@@ -70,7 +71,7 @@ public class LoadAnalyserService {
                 DataTypes.createStructField(STORE_AND_FWD_FLAG.getName(), DataTypes.StringType, false),
                 DataTypes.createStructField(IN_TS.getName(), DataTypes.TimestampType, false),
                 DataTypes.createStructField(OUT_TS.getName(), DataTypes.TimestampType, false),
-                DataTypes.createStructField(PASSENGER_COUNT.getName(), DataTypes.IntegerType, false),
+                DataTypes.createStructField(PASSENGER_COUNT.getName(), DataTypes.LongType, false),
                 DataTypes.createStructField(TRIP_TIME_IN_SECS.getName(), DataTypes.StringType, false),
                 DataTypes.createStructField(TRIP_DISTANCE.getName(), DataTypes.StringType, false),
                 DataTypes.createStructField(IN_X.getName(), DataTypes.DoubleType, false),

@@ -17,5 +17,5 @@ public class LoadFactor {
 
     int xIndex;
     int yIndex;
-    int value;
+    long value;
 }

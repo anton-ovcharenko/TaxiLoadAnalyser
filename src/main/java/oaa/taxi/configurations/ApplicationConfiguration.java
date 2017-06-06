@@ -17,9 +17,10 @@ public class ApplicationConfiguration {
     public SparkConf sparkConfLocalhost() {
         return new SparkConf()
                 .setAppName("NY taxi load analyser (localhost)")
-                .setMaster("local[2]")
-                .set("spark.executor.memory", "1g")
+                .setMaster("local[4]")
+                .set("spark.executor.memory", "2g")
                 .set("spark.local.dir", "d:/temp/")
+                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 ;
     }
 
@@ -28,7 +29,7 @@ public class ApplicationConfiguration {
     public SparkConf sparkConfProd() {
         return new SparkConf()
                 .setAppName("NY taxi load analyser (PROD)")
-                .setMaster("local[*]")
+                .setMaster("mesos://HOST:PORT")
                 ;
     }
 

@@ -72,7 +72,7 @@ public class SparkComputationService2Impl implements SparkComputationService, Se
 
                 .groupBy(col(LoadFactor.X_INDEX_NAME), col(LoadFactor.Y_INDEX_NAME))
                 .agg(sum(col(LoadFactor.VALUE_NAME)).cast(DataTypes.IntegerType).alias(LoadFactor.VALUE_NAME))
-                .orderBy(col(LoadFactor.VALUE_NAME).desc())
+                //.orderBy(col(LoadFactor.VALUE_NAME).desc())
                 .as(Encoders.bean(LoadFactor.class));
 
         long t3 = System.currentTimeMillis();

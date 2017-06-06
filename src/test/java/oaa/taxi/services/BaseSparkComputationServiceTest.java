@@ -97,18 +97,18 @@ abstract public class BaseSparkComputationServiceTest {
 
     protected void checkLoadFactorListDropOff4D(List<LoadFactor> result) {
         Assert.assertEquals("Amount of LoadFactors is wrong", 3, result.size());
-        Assert.assertEquals(new LoadFactor(0, 1, 9), result.get(0));
-        Assert.assertEquals(new LoadFactor(3, 0, 5), result.get(1));
-        Assert.assertEquals(new LoadFactor(2, 2, 1), result.get(2));
+        Assert.assertEquals(new LoadFactor(2, 2, 1), result.get(0));
+        Assert.assertEquals(new LoadFactor(0, 1, 9), result.get(1));
+        Assert.assertEquals(new LoadFactor(3, 0, 5), result.get(2));
     }
 
     protected void checkLoadFactorListPickUp4D(List<LoadFactor> result) {
         Assert.assertEquals("Amount of LoadFactors is wrong", 5, result.size());
-        Assert.assertEquals(new LoadFactor(1, 3, 6), result.get(0));
-        Assert.assertEquals(new LoadFactor(3, 3, 4), result.get(1));
-        Assert.assertEquals(new LoadFactor(1, 2, 3), result.get(2));
+        Assert.assertEquals(new LoadFactor(1, 2, 3), result.get(0));
+        Assert.assertEquals(new LoadFactor(1, 1, 1), result.get(1));
+        Assert.assertEquals(new LoadFactor(1, 3, 6), result.get(2));
         Assert.assertEquals(new LoadFactor(0, 0, 2), result.get(3));
-        Assert.assertEquals(new LoadFactor(1, 1, 1), result.get(4));
+        Assert.assertEquals(new LoadFactor(3, 3, 4), result.get(4));
     }
 
     protected void checkLoadFactorListDropOff1D(List<LoadFactor> result) {
