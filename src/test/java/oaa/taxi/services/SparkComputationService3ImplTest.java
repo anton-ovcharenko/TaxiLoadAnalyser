@@ -28,22 +28,22 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
         sparkComputationService = new SparkComputationService3Impl(broadcastParameterHolder);
 
         SS.udf().register(
-                ComputeXIndexFilter.NAME,
-                new ComputeXIndexFilter(broadcastParameterHolder),
-                DataTypes.IntegerType);
+            ComputeXIndexFilter.NAME,
+            new ComputeXIndexFilter(broadcastParameterHolder),
+            DataTypes.IntegerType);
         SS.udf().register(
-                ComputeYIndexFilter.NAME,
-                new ComputeYIndexFilter(broadcastParameterHolder),
-                DataTypes.IntegerType);
+            ComputeYIndexFilter.NAME,
+            new ComputeYIndexFilter(broadcastParameterHolder),
+            DataTypes.IntegerType);
     }
 
     @Test
     public void getLoadFactorListDropOff4D() throws Exception {
         List<LoadFactor> result = sparkComputationService.getLoadFactorList(
-                rowDataset,
-                Action.DROPOFF,
-                getSeconds("2013-01-02 00:00:00"),
-                FOUR_DAY_WINDOW);
+            rowDataset,
+            Action.DROPOFF,
+            getSeconds("2013-01-02 00:00:00"),
+            FOUR_DAY_WINDOW);
 
         Assert.assertEquals("Amount of LoadFactors is wrong", 3, result.size());
         Assert.assertEquals(new LoadFactor(2, 2, 1), result.get(0));
@@ -54,10 +54,10 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
     @Test
     public void getLoadFactorListPickUp4D() throws Exception {
         List<LoadFactor> result = sparkComputationService.getLoadFactorList(
-                rowDataset,
-                Action.PICKUP,
-                getSeconds("2013-01-02 00:00:00"),
-                FOUR_DAY_WINDOW);
+            rowDataset,
+            Action.PICKUP,
+            getSeconds("2013-01-02 00:00:00"),
+            FOUR_DAY_WINDOW);
 
         Assert.assertEquals("Amount of LoadFactors is wrong", 5, result.size());
         Assert.assertEquals(new LoadFactor(1, 2, 3), result.get(0));
@@ -70,10 +70,10 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
     @Test
     public void getLoadFactorListDropOff1D() throws Exception {
         List<LoadFactor> result = sparkComputationService.getLoadFactorList(
-                rowDataset,
-                Action.DROPOFF,
-                getSeconds("2013-01-03 00:00:00"),
-                ONE_DAY_WINDOW);
+            rowDataset,
+            Action.DROPOFF,
+            getSeconds("2013-01-03 00:00:00"),
+            ONE_DAY_WINDOW);
 
         checkLoadFactorListDropOff1D(result);
     }
@@ -82,10 +82,10 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
     @Test
     public void getLoadFactorListPickUp1D() throws Exception {
         List<LoadFactor> result = sparkComputationService.getLoadFactorList(
-                rowDataset,
-                Action.PICKUP,
-                getSeconds("2013-01-04 00:00:00"),
-                ONE_DAY_WINDOW);
+            rowDataset,
+            Action.PICKUP,
+            getSeconds("2013-01-04 00:00:00"),
+            ONE_DAY_WINDOW);
 
         Assert.assertEquals("Amount of LoadFactors is wrong", 3, result.size());
         Assert.assertEquals(new LoadFactor(1, 1, 9), result.get(0));
@@ -96,11 +96,11 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
     @Test
     public void getLoadFactorListDropOff1H() throws Exception {
         List<LoadFactor> result =
-                sparkComputationService.getLoadFactorList(
-                        rowDataset,
-                        Action.DROPOFF,
-                        getSeconds("2013-02-03 15:20:00"),
-                        ONE_HOUR_WINDOW);
+            sparkComputationService.getLoadFactorList(
+                rowDataset,
+                Action.DROPOFF,
+                getSeconds("2013-02-03 15:20:00"),
+                ONE_HOUR_WINDOW);
 
         checkLoadFactorListDropOff1H(result);
     }
@@ -108,10 +108,10 @@ public class SparkComputationService3ImplTest extends BaseSparkComputationServic
     @Test
     public void getLoadFactorListPickUp1H() throws Exception {
         List<LoadFactor> result = sparkComputationService.getLoadFactorList(
-                rowDataset,
-                Action.PICKUP,
-                getSeconds("2013-01-04 02:00:00"),
-                ONE_HOUR_WINDOW);
+            rowDataset,
+            Action.PICKUP,
+            getSeconds("2013-01-04 02:00:00"),
+            ONE_HOUR_WINDOW);
 
         checkLoadFactorListPickUp1H(result);
     }

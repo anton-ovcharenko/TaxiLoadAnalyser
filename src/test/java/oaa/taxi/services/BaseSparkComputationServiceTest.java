@@ -1,5 +1,11 @@
 package oaa.taxi.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import oaa.taxi.domain.ParametersHolder;
 import oaa.taxi.domain.models.LoadFactor;
 import org.apache.spark.SparkConf;
@@ -10,18 +16,9 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static oaa.taxi.services.LoadAnalyserService.generateSchema;
 
 /**
  * Created by Antman on 05.06.2017.
@@ -50,7 +47,7 @@ abstract public class BaseSparkComputationServiceTest {
     public static void setUpClass() throws Exception {
         SC = new SparkConf();
         SC.setAppName("Test");
-        SC.setMaster("local[1]");
+        SC.setMaster("local[2]");
 
         JSC = new JavaSparkContext(SC);
         SS = SparkSession.builder().sparkContext(JSC.sc()).config(SC).getOrCreate();
@@ -58,18 +55,20 @@ abstract public class BaseSparkComputationServiceTest {
 
     @AfterClass
     public static void afterClass() throws Exception {
-        if(SS != null) {
+        if (SS != null) {
             SS.stop();
         }
 
-        if(JSC != null) {
+        if (JSC != null) {
             JSC.stop();
         }
     }
 
     protected void setUp() throws Exception {
-        rowDataset = SS.read().format("CSV").option("header", "true").schema(generateSchema())
-                .load("./src/test/resources/test.csv");
+        rowDataset = SS.read()
+                       .format("CSV")
+                       .option("header", "true")
+                       .load("./src/test/resources/test.csv");
     }
 
     protected Broadcast<ParametersHolder> createBroadcastParameterHolder() {

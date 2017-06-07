@@ -1,9 +1,9 @@
 package oaa.taxi.domain.models;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * Created by Antman on 05.06.2017.
