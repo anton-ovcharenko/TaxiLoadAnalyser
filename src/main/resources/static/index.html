@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <td colspan="4">
-            <canvas id="myCanvas"  style="border:1px solid black;" width="1600" height="860"/>
+            <canvas id="myCanvas"  style="border:1px solid black;" width="1480" height="890"/>
         </td>
     </tr>
     </tbody>
@@ -36,13 +36,13 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
 
-    var mapWidth = 1600;
-    var mapHeight = 860;
+    var mapWidth = 1480;
+    var mapHeight = 890;
     drawCanvas();
 
     function drawCanvas() {
         var base_image = new Image();
-        base_image.src = './img/NYC.png';
+        base_image.src = './img/NYC_2.png';
         base_image.onload = function(){
             ctx.save();
             ctx.drawImage(base_image, 0, 0, mapWidth, mapHeight);
