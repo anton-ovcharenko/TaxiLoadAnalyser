@@ -86,16 +86,4 @@ public class SparkComputationServiceImpl implements SparkComputationService, Ser
 
         return new LoadFactor(xp, yp, Long.parseLong(row.getAs(PASSENGER_COUNT.getName())));
     }
-
-    private Fields resolveDateColumn(Action action) {
-        return Action.PICKUP == action ? IN_TS : OUT_TS;
-    }
-
-    private Fields resolveXColumn(Action action) {
-        return Action.PICKUP == action ? IN_X : OUT_X;
-    }
-
-    private Fields resolveYColumn(Action action) {
-        return Action.PICKUP == action ? IN_Y : OUT_Y;
-    }
 }

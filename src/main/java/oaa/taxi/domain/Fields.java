@@ -50,6 +50,7 @@ public enum Fields {
             TRIP_TIME_IN_SECS.getName(),
             TRIP_DISTANCE.getName(),
         };
+
         public static final String[] uselessFields2 = new String[] {
             IN_X.getName(),
             IN_Y.getName(),
@@ -57,33 +58,6 @@ public enum Fields {
             OUT_Y.getName(),
             IN_TS.getName(),
             OUT_TS.getName(),
-        };
-        public static final String[] uselessFields3_out = new String[] {
-            MEDALLION.getName(),
-            HACK_LICENSE.getName(),
-            VENDOR_ID.getName(),
-            RATE_CODE.getName(),
-            STORE_AND_FWD_FLAG.getName(),
-            TRIP_TIME_IN_SECS.getName(),
-            TRIP_DISTANCE.getName(),
-
-            OUT_X.getName(),
-            OUT_Y.getName(),
-            OUT_TS.getName(),
-        };
-
-        public static final String[] uselessFields3_in = new String[] {
-            MEDALLION.getName(),
-            HACK_LICENSE.getName(),
-            VENDOR_ID.getName(),
-            RATE_CODE.getName(),
-            STORE_AND_FWD_FLAG.getName(),
-            TRIP_TIME_IN_SECS.getName(),
-            TRIP_DISTANCE.getName(),
-
-            IN_X.getName(),
-            IN_Y.getName(),
-            IN_TS.getName(),
         };
     }
 }

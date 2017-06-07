@@ -86,16 +86,4 @@ public class SparkComputationService2Impl implements SparkComputationService, Se
 
         return result;
     }
-
-    private Fields resolveSecondsColumn(Action action) {
-        return Action.PICKUP == action ? IN_SECONDS : OUT_SECONDS;
-    }
-
-    private Fields resolveXIndexColumn(Action action) {
-        return Action.PICKUP == action ? IN_X_INDEX : OUT_X_INDEX;
-    }
-
-    private Fields resolveYIndexColumn(Action action) {
-        return Action.PICKUP == action ? IN_Y_INDEX : OUT_Y_INDEX;
-    }
 }

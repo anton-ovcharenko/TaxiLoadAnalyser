@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.extern.log4j.Log4j2;
 import oaa.taxi.domain.Action;
+import oaa.taxi.domain.Fields;
 import oaa.taxi.domain.filters.ComputeXIndexFilter;
 import oaa.taxi.domain.filters.ComputeYIndexFilter;
 import oaa.taxi.domain.models.LoadFactor;
@@ -35,8 +36,7 @@ public class LoadAnalyserService {
     @Autowired
 //    @Qualifier("sparkComputationService") //map-reduce implementation
 //    @Qualifier("sparkComputationService2") //UDF implementation
-//    @Qualifier("sparkComputationService3") //optimized variant with UDF
-    @Qualifier("sparkComputationService4")
+    @Qualifier("sparkComputationService3") //optimized variant (with UDF or without)
     private SparkComputationService sparkComputationService;
 
     public List<LoadFactor> getLoadFactors(Action action, long timeInSec, long windowInSec) {
@@ -44,7 +44,8 @@ public class LoadAnalyserService {
             .read()
             .option("header", "true")
             .option("mode", "DROPMALFORMED")
-            .csv(dataPath);
+            .csv(dataPath)
+            .drop(Fields.Constants.uselessFields);
 
         sparkSession.udf().register(ComputeXIndexFilter.NAME, computeXIndexFilter, DataTypes.IntegerType);
         sparkSession.udf().register(ComputeYIndexFilter.NAME, computeYIndexFilter, DataTypes.IntegerType);
