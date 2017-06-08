@@ -22,7 +22,7 @@ public class ApplicationConfiguration {
         return new SparkConf()
                 .setAppName("NY taxi load analyser (localhost)")
                 .setMaster("local[4]")
-                .set("spark.executor.memory", "2g")
+                .set("spark.executor.memory", "8g")
                 .set("spark.local.dir", "d:/temp/")
                 .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 ;

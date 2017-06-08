@@ -45,7 +45,9 @@ public class LoadAnalyserService {
             .option("header", "true")
             .option("mode", "DROPMALFORMED")
             .csv(dataPath)
-            .drop(Fields.Constants.uselessFields);
+            .drop(Fields.Constants.uselessFields)
+            //.repartition(10)
+            ;
 
         sparkSession.udf().register(ComputeXIndexFilter.NAME, computeXIndexFilter, DataTypes.IntegerType);
         sparkSession.udf().register(ComputeYIndexFilter.NAME, computeYIndexFilter, DataTypes.IntegerType);
