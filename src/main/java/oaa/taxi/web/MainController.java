@@ -39,9 +39,9 @@ public class MainController {
                                        @RequestParam("windowInSec") long windowInSec) {
 
         return LoadFactorsResponse.builder()
-                .gridWidth(parametersHolder.getGridWidth())
-                .gridHeight(parametersHolder.getGridHeight())
-                .loadFactorList(loadAnalyserService.getLoadFactors(action, timeInSec, windowInSec))
-                .build();
+                                  .gridWidth(parametersHolder.getGridWidth())
+                                  .gridHeight(parametersHolder.getGridHeight())
+                                  .loadFactorList(loadAnalyserService.getLoadFactors(action, timeInSec, windowInSec))
+                                  .build();
     }
 }

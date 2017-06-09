@@ -1,4 +1,4 @@
-package oaa.taxi.services;
+package oaa.taxi.services.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,10 +10,12 @@ import oaa.taxi.domain.ParametersHolder;
 import oaa.taxi.domain.filters.ComputeXIndexFilter;
 import oaa.taxi.domain.filters.ComputeYIndexFilter;
 import oaa.taxi.domain.models.LoadFactor;
+import oaa.taxi.services.SparkComputationService;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.functions;
 import org.apache.spark.sql.types.DataTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +39,7 @@ import static org.apache.spark.sql.functions.sum;
 import static org.apache.spark.sql.functions.unix_timestamp;
 
 /**
- * Implementation of SparkComputationService that used won UDF functions.
+ * Implementation of SparkComputationService that used own UDF functions.
  */
 @Component("sparkComputationService2")
 @Log4j2
@@ -63,8 +65,8 @@ public class SparkComputationService2Impl implements SparkComputationService, Se
             .withColumn(IN_SECONDS.getName(), unix_timestamp(castTimestamp(IN_TS)))
             .withColumn(OUT_SECONDS.getName(), unix_timestamp(castTimestamp(OUT_TS)))
             .withColumn(IN_X_INDEX.getName(), callUDF(ComputeXIndexFilter.NAME, castDouble(IN_X)))
-            .withColumn(IN_Y_INDEX.getName(), callUDF(ComputeYIndexFilter.NAME, castDouble(IN_Y)))
-            .withColumn(OUT_X_INDEX.getName(), callUDF(ComputeXIndexFilter.NAME, castDouble(OUT_X)))
+            .withColumn(IN_Y_INDEX.getName(), functions.callUDF(ComputeYIndexFilter.NAME, castDouble(IN_Y)))
+            .withColumn(OUT_X_INDEX.getName(), functions.callUDF(ComputeXIndexFilter.NAME, castDouble(OUT_X)))
             .withColumn(OUT_Y_INDEX.getName(), callUDF(ComputeYIndexFilter.NAME, castDouble(OUT_Y)))
             .drop(Fields.Constants.uselessFields2)
             //.persist(StorageLevel.MEMORY_AND_DISK())

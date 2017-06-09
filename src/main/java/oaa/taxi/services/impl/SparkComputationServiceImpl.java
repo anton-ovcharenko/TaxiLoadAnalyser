@@ -1,4 +1,4 @@
-package oaa.taxi.services;
+package oaa.taxi.services.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,6 +8,7 @@ import oaa.taxi.domain.Action;
 import oaa.taxi.domain.Fields;
 import oaa.taxi.domain.ParametersHolder;
 import oaa.taxi.domain.models.LoadFactor;
+import oaa.taxi.services.SparkComputationService;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.Dataset;

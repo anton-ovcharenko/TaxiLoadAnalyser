@@ -1,4 +1,4 @@
-package oaa.taxi.services;
+package oaa.taxi.services.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,11 +9,13 @@ import oaa.taxi.domain.ParametersHolder;
 import oaa.taxi.domain.filters.ComputeXIndexFilter;
 import oaa.taxi.domain.filters.ComputeYIndexFilter;
 import oaa.taxi.domain.models.LoadFactor;
+import oaa.taxi.services.SparkComputationService;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.functions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ import static org.apache.spark.sql.functions.sum;
 import static org.apache.spark.sql.functions.unix_timestamp;
 
 /**
- * @author aovcharenko date 01-06-2017.
+ * Most optimal implementation of SparkComputationService that used either UDF function or  transformation based on simple math operation.
  */
 @Component("sparkComputationService3")
 @Log4j2
@@ -56,8 +58,8 @@ public class SparkComputationService3Impl implements SparkComputationService, Se
         //filteredDataset.show();
 
         Dataset<LoadFactor> loadFactorDataset = filteredDataset
-            .withColumn(LoadFactor.X_INDEX_NAME, callUDF(ComputeXIndexFilter.NAME, castedXCol))
-            .withColumn(LoadFactor.Y_INDEX_NAME, callUDF(ComputeYIndexFilter.NAME, castedYCol))
+            .withColumn(LoadFactor.X_INDEX_NAME, functions.callUDF(ComputeXIndexFilter.NAME, castedXCol))
+            .withColumn(LoadFactor.Y_INDEX_NAME, functions.callUDF(ComputeYIndexFilter.NAME, castedYCol))
 
 //            .withColumn(LoadFactor.X_INDEX_NAME,
 //                        floor((castedXCol.minus(parametersHolder.getLeft())).divide(parametersHolder.getCellWidth())).cast(DataTypes.IntegerType))

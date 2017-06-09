@@ -4,6 +4,7 @@ import java.util.List;
 
 import oaa.taxi.domain.Action;
 import oaa.taxi.domain.models.LoadFactor;
+import oaa.taxi.services.impl.SparkComputationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

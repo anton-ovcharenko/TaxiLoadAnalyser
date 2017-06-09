@@ -1,6 +1,8 @@
 package oaa.taxi.configurations;
 
 import oaa.taxi.domain.ParametersHolder;
+import oaa.taxi.services.LoadAnalyserService;
+import oaa.taxi.services.impl.CsvSourceLoadAnalyserServiceImpl;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
@@ -15,29 +17,6 @@ import org.springframework.context.annotation.PropertySource;
 @ComponentScan("oaa.taxi")
 @PropertySource("classpath:property.properties")
 public class ApplicationConfiguration {
-
-    @Bean
-    @Profile("localhost")
-    public SparkConf sparkConfLocalhost() {
-        return new SparkConf()
-                .setAppName("NY taxi load analyser (localhost)")
-                .setMaster("local[4]")
-                .set("spark.executor.memory", "8g")
-                .set("spark.local.dir", "d:/temp/")
-                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
-                ;
-    }
-
-    @Bean
-    @Profile("default")
-    public SparkConf sparkConfProd() {
-        //not ready now
-        return new SparkConf()
-                .setAppName("NY taxi load analyser (PROD)")
-                .setMaster("mesos://HOST:PORT")
-                ;
-    }
-
     @Bean
     public JavaSparkContext javaSparkContext(SparkConf sparkConf) {
         return new JavaSparkContext(sparkConf);

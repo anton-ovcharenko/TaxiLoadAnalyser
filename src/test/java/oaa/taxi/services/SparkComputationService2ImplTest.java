@@ -7,6 +7,7 @@ import oaa.taxi.domain.ParametersHolder;
 import oaa.taxi.domain.filters.ComputeXIndexFilter;
 import oaa.taxi.domain.filters.ComputeYIndexFilter;
 import oaa.taxi.domain.models.LoadFactor;
+import oaa.taxi.services.impl.SparkComputationService2Impl;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.types.DataTypes;
 import org.junit.Before;
