@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static oaa.taxi.domain.Fields.PASSENGER_COUNT;
-import static org.apache.spark.sql.functions.callUDF;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.sum;
 import static org.apache.spark.sql.functions.unix_timestamp;

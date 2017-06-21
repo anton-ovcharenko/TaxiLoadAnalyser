@@ -17,7 +17,6 @@ import org.apache.spark.sql.types.DataTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * @author aovcharenko date 24-05-2017.
@@ -40,14 +39,11 @@ public class CsvSourceLoadAnalyserServiceImpl implements LoadAnalyserService {
 
     @Override
     public List<LoadFactor> getLoadFactors(Action action, long timeInSec, long windowInSec) {
-        Dataset<Row> rowDataset = sparkSession
-            .read()
-            .option("header", "true")
-            .option("mode", "DROPMALFORMED")
-            .csv(dataPath)
-            .drop(Fields.Constants.uselessFields)
-            //.repartition(10)
-            ;
+        Dataset<Row> rowDataset = sparkSession.read()
+                                              .option("header", "true")
+                                              .option("mode", "DROPMALFORMED")
+                                              .csv(dataPath)
+                                              .drop(Fields.Constants.uselessFields);
 
         sparkSession.udf().register(ComputeXIndexFilter.NAME, computeXIndexFilter, DataTypes.IntegerType);
         sparkSession.udf().register(ComputeYIndexFilter.NAME, computeYIndexFilter, DataTypes.IntegerType);

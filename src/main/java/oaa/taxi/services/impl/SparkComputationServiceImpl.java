@@ -18,10 +18,8 @@ import org.apache.spark.sql.types.DataTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static oaa.taxi.domain.Fields.IN_TS;
 import static oaa.taxi.domain.Fields.IN_X;
 import static oaa.taxi.domain.Fields.IN_Y;
-import static oaa.taxi.domain.Fields.OUT_TS;
 import static oaa.taxi.domain.Fields.OUT_X;
 import static oaa.taxi.domain.Fields.OUT_Y;
 import static oaa.taxi.domain.Fields.PASSENGER_COUNT;
